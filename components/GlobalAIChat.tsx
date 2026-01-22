@@ -147,6 +147,7 @@ export const GlobalAIChat: React.FC<Props> = ({
         <AnimatePresence>
             {!isOpen && (
                 <motion.button
+                    id="ai-chat-trigger" // ID Added for Tour
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0, opacity: 0 }}

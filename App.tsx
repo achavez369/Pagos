@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { Timeline } from './components/Timeline';
 import { generateMockCustomers, simulateMovement } from './services/dataService';
 import { Customer, StageId, PaymentRecord, FilterState } from './types';
@@ -17,7 +18,8 @@ import { PlaybooksManager } from './components/PlaybooksManager';
 import { DataUploadView } from './components/DataUploadView';
 import { PlanAndBilling } from './components/PlanAndBilling';
 import { LoginView } from './components/LoginView';
-import { GlobalAIChat, ChatMessage } from './components/GlobalAIChat'; // Import Chat
+import { GlobalAIChat, ChatMessage } from './components/GlobalAIChat'; 
+import { AppTour, TourStep } from './components/AppTour';
 
 const App: React.FC = () => {
   // Auth State
@@ -35,8 +37,11 @@ const App: React.FC = () => {
   // Chat & Token State (Hoisted)
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [tokenBalance, setTokenBalance] = useState(1250);
-  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]); // To share with Reports View if needed
+  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]); 
   
+  // Tour State
+  const [isTourOpen, setIsTourOpen] = useState(false);
+
   // Filter State
   const [filters, setFilters] = useState<FilterState>({
     campaigns: [],
@@ -52,6 +57,17 @@ const App: React.FC = () => {
   useEffect(() => {
     setCustomers(generateMockCustomers(30));
   }, []);
+
+  // Check for First Time User
+  useEffect(() => {
+    if (isAuthenticated) {
+        const hasSeenTour = localStorage.getItem('hasSeenTour_v1');
+        if (!hasSeenTour) {
+            // Small delay to ensure UI renders
+            setTimeout(() => setIsTourOpen(true), 1000);
+        }
+    }
+  }, [isAuthenticated]);
 
   // Simulation Loop
   useEffect(() => {
@@ -93,6 +109,18 @@ const App: React.FC = () => {
     setFilters(prev => ({ ...prev, status: 'active', campaigns: [], stages: [] }));
   }, []);
 
+  const handleTourComplete = () => {
+      setIsTourOpen(false);
+      localStorage.setItem('hasSeenTour_v1', 'true');
+  };
+
+  const startTourManually = () => {
+      // Force reset view to dashboard to ensure elements exist
+      setCurrentView('dashboard');
+      setSelectedCustomer(null);
+      setTimeout(() => setIsTourOpen(true), 100);
+  };
+
   // Filtering Logic
   const filteredCustomers = useMemo(() => {
     let sourceData: Customer[] = [];
@@ -129,6 +157,40 @@ const App: React.FC = () => {
       }
   };
 
+  // TOUR STEPS CONFIGURATION
+  const TOUR_STEPS: TourStep[] = [
+      {
+          targetId: 'sidebar-nav',
+          title: 'Navegación Principal',
+          description: 'Accede a tus reportes, configura frameworks de comunicación y gestiona tus estrategias (Playbooks) desde aquí.',
+          position: 'right'
+      },
+      {
+          targetId: 'timeline-area',
+          title: 'Mapa de Compromisos',
+          description: 'Visualiza a tus clientes moviéndose en tiempo real a través de las etapas de cobro, desde preventivo hasta recuperación.',
+          position: 'center'
+      },
+      {
+          targetId: 'simulation-controls',
+          title: 'Motor de Simulación',
+          description: 'Usa estos controles para simular el paso del tiempo y ver cómo reacciona tu cartera ante las estrategias configuradas.',
+          position: 'bottom'
+      },
+      {
+          targetId: 'upload-btn',
+          title: 'Importar Datos',
+          description: 'Carga nuevos lotes de clientes mediante Excel o CSV para asignarlos automáticamente a una campaña.',
+          position: 'right'
+      },
+      {
+          targetId: 'ai-chat-trigger',
+          title: 'Tu Estratega IA',
+          description: 'Haz clic aquí para pedir análisis predictivos, redactar emails o crear nuevas estrategias con lenguaje natural.',
+          position: 'left'
+      }
+  ];
+
   // --- AUTH CHECK ---
   if (!isAuthenticated) {
       return <LoginView onLogin={() => setIsAuthenticated(true)} />;
@@ -138,7 +200,7 @@ const App: React.FC = () => {
     <div className="h-screen w-screen flex bg-white text-slate-900 font-sans overflow-hidden">
       
       {/* LEFT SIDEBAR - Minimal & Dark/Sober Icons */}
-      <aside className="w-16 bg-slate-50 border-r border-slate-200 flex flex-col items-center py-6 z-30 flex-none">
+      <aside id="sidebar-nav" className="w-16 bg-slate-50 border-r border-slate-200 flex flex-col items-center py-6 z-30 flex-none">
         <div className="mb-8">
            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white font-bold shadow-sm">
               F
@@ -147,7 +209,9 @@ const App: React.FC = () => {
         
         <nav className="flex flex-col gap-6 w-full items-center">
             <SidebarIcon icon={<Inbox className="w-5 h-5" />} label="Inbox" active={currentView === 'dashboard'} onClick={() => { setCurrentView('dashboard'); setSelectedCustomer(null); }} />
-            <SidebarIcon icon={<UploadCloud className="w-5 h-5" />} label="Importar" active={currentView === 'upload'} onClick={() => { setCurrentView('upload'); setSelectedCustomer(null); }} />
+            <div id="upload-btn">
+                <SidebarIcon icon={<UploadCloud className="w-5 h-5" />} label="Importar" active={currentView === 'upload'} onClick={() => { setCurrentView('upload'); setSelectedCustomer(null); }} />
+            </div>
             <div className="h-px w-8 bg-slate-200"></div>
             <SidebarIcon icon={<Workflow className="w-5 h-5" />} label="Frameworks" active={currentView === 'frameworks'} onClick={() => { setCurrentView('frameworks'); setSelectedCustomer(null); }} />
             <SidebarIcon icon={<BookOpen className="w-5 h-5" />} label="Playbooks" active={currentView === 'playbooks'} onClick={() => { setCurrentView('playbooks'); setSelectedCustomer(null); }} />
@@ -158,7 +222,9 @@ const App: React.FC = () => {
 
         <div className="mt-auto flex flex-col gap-6 w-full items-center">
             <SidebarIcon icon={<Command className="w-5 h-5" />} label="Comandos" />
-            <SidebarIcon icon={<HelpCircle className="w-5 h-5" />} label="Ayuda" />
+            <div onClick={startTourManually}>
+                <SidebarIcon icon={<HelpCircle className="w-5 h-5" />} label="Ayuda / Tour" />
+            </div>
             <SidebarIcon icon={<Settings className="w-5 h-5" />} label="Configuración" />
             <div className="w-8 h-8 rounded-full overflow-hidden border border-slate-200 cursor-pointer hover:ring-2 hover:ring-slate-300 transition-all" onClick={() => setIsAuthenticated(false)} title="Cerrar Sesión">
                 <img src="https://picsum.photos/id/64/100/100" alt="Admin" className="w-full h-full object-cover" />
@@ -193,19 +259,23 @@ const App: React.FC = () => {
                         />
                     </div>
                     <div className="h-4 w-px bg-slate-200 mx-1"></div>
-                    <button 
-                        onClick={toggleSimulation}
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-slate-100 transition-colors text-slate-600"
-                    >
-                        {isSimulating ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                        {isSimulating ? 'Pausar' : 'Simular'}
-                    </button>
-                    <button 
-                        onClick={resetData}
-                        className="p-1.5 text-slate-400 hover:text-slate-900 transition-colors"
-                    >
-                        <RefreshCw className="w-4 h-4" />
-                    </button>
+                    
+                    <div id="simulation-controls" className="flex items-center gap-2">
+                        <button 
+                            onClick={toggleSimulation}
+                            className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-slate-100 transition-colors text-slate-600"
+                        >
+                            {isSimulating ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                            {isSimulating ? 'Pausar' : 'Simular'}
+                        </button>
+                        <button 
+                            onClick={resetData}
+                            className="p-1.5 text-slate-400 hover:text-slate-900 transition-colors"
+                        >
+                            <RefreshCw className="w-4 h-4" />
+                        </button>
+                    </div>
+
                  </div>
               </header>
           ) : null}
@@ -239,10 +309,12 @@ const App: React.FC = () => {
             ) : currentView === 'billing' ? (
                 <PlanAndBilling />
             ) : (
-                <Timeline 
-                    customers={filteredCustomers} 
-                    onCustomerClick={(c) => setSelectedCustomer(c)} 
-                />
+                <div id="timeline-area" className="w-full h-full">
+                    <Timeline 
+                        customers={filteredCustomers} 
+                        onCustomerClick={(c) => setSelectedCustomer(c)} 
+                    />
+                </div>
             )}
           </main>
       </div>
@@ -263,6 +335,18 @@ const App: React.FC = () => {
             onClose={() => setShowPaymentHistory(false)} 
           />
       )}
+
+      {/* TOUR OVERLAY */}
+      <AnimatePresence>
+          {isTourOpen && (
+              <AppTour 
+                steps={TOUR_STEPS} 
+                isOpen={isTourOpen} 
+                onClose={() => setIsTourOpen(false)} 
+                onComplete={handleTourComplete} 
+              />
+          )}
+      </AnimatePresence>
 
     </div>
   );
