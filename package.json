@@ -1,29 +1,23 @@
-
 {
-  "name": "fintech-engagement-os",
+  "name": "fintech",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.0",
   "type": "module",
-  "description": "Una línea de tiempo visual en tiempo real para la gestión inteligente de pagos.",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "framer-motion": "^12.27.1",
+    "react-dom": "^19.2.3",
     "lucide-react": "^0.562.0",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react": "^19.2.3"
   },
   "devDependencies": {
-    "@types/react": "^19.2.3",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^4.0.0",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.24",
-    "tailwindcss": "^3.3.2",
-    "typescript": "^5.0.2",
-    "vite": "^4.3.9"
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
   }
 }

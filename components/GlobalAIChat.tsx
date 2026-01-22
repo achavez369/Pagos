@@ -69,21 +69,17 @@ export const GlobalAIChat: React.FC<Props> = ({
       if (!input.trim() || tokenBalance < estimatedCost) return;
 
       const userText = input;
-      
-      // Simulate Actual Cost varying slightly from Estimate (Realistic LLM behavior)
-      const variance = Math.floor(Math.random() * 5) - 2; // -2 to +2 variation
-      const actualCost = Math.max(1, estimatedCost + variance);
-
+      const cost = estimatedCost;
       setInput('');
       
-      onSpendTokens(actualCost);
+      onSpendTokens(cost);
 
       const userMsg: ChatMessage = {
           id: Date.now().toString(),
           role: 'user',
           type: 'text',
           content: { text: userText },
-          cost: actualCost,
+          cost,
           timestamp: new Date()
       };
 
@@ -230,9 +226,8 @@ export const GlobalAIChat: React.FC<Props> = ({
                                         )}
                                     </div>
                                     {msg.cost && (
-                                        <span className="text-[9px] text-slate-400 font-medium flex items-center gap-1 ml-1">
-                                            <Zap className="w-3 h-3 text-slate-400" /> 
-                                            Real: <span className="text-slate-600 font-bold">-{msg.cost}</span>
+                                        <span className="text-[9px] text-slate-400 font-medium flex items-center gap-0.5">
+                                            <Zap className="w-2.5 h-2.5" /> -{msg.cost}
                                         </span>
                                     )}
                                 </div>
@@ -279,10 +274,9 @@ export const GlobalAIChat: React.FC<Props> = ({
                                 {estimatedCost > 0 && (
                                     <motion.div 
                                         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 transition-colors ${tokenBalance >= estimatedCost ? 'bg-indigo-50 text-indigo-600' : 'bg-rose-50 text-rose-600'}`}
+                                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5 ${tokenBalance >= estimatedCost ? 'bg-indigo-50 text-indigo-600' : 'bg-rose-50 text-rose-600'}`}
                                     >
-                                        <Zap className="w-3 h-3 fill-current" /> 
-                                        Est: {estimatedCost}
+                                        <Zap className="w-3 h-3" /> {estimatedCost}
                                     </motion.div>
                                 )}
                             </AnimatePresence>

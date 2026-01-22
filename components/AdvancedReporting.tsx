@@ -2,7 +2,7 @@
 import React from 'react';
 import { 
   FileText, Sparkles, User, 
-  Terminal, BarChart3, Clock, Zap
+  Terminal, BarChart3, Clock
 } from 'lucide-react';
 import { ChatMessage } from './GlobalAIChat';
 
@@ -55,17 +55,9 @@ export const AdvancedReporting: React.FC<Props> = ({ chatHistory }) => {
                                             {msg.type.replace('_', ' ')}
                                         </span>
                                     </div>
-                                    <div className="flex items-center gap-3">
-                                        {msg.cost && (
-                                             <div className="flex items-center gap-1 text-[10px] text-slate-500 font-medium bg-slate-100 px-1.5 py-0.5 rounded" title="Costo Real">
-                                                <Zap className="w-3 h-3 text-amber-500 fill-amber-500" />
-                                                -{msg.cost}
-                                             </div>
-                                        )}
-                                        <div className="flex items-center gap-1 text-[10px] text-slate-400">
-                                            <Clock className="w-3 h-3" />
-                                            {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                        </div>
+                                    <div className="flex items-center gap-1 text-[10px] text-slate-400">
+                                        <Clock className="w-3 h-3" />
+                                        {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </div>
                                 </div>
                                 
