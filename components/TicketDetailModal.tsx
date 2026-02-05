@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Customer, Ticket, TicketActivity } from '../types';
@@ -98,7 +99,7 @@ export const TicketDetailModal: React.FC<Props> = ({ ticket, customer, onClose }
                          ticket.daysDiff > 15 ? 'Crítico' : 'Tardío'}
                      </div>
                      <span className="text-[10px] text-slate-400 font-medium mt-1">
-                        Framework Final: {getStageLabel()}
+                        Playbook Final: {getStageLabel()}
                      </span>
                  </div>
                  

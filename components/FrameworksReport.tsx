@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Layers, ArrowRight, Zap, Clock } from 'lucide-react';
 
@@ -60,7 +61,7 @@ export const FrameworksReport: React.FC = () => {
             <div>
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Tiempo Promedio</p>
                 <h3 className="text-2xl font-bold text-slate-900">4.2 días</h3>
-                <p className="text-sm text-slate-500 font-medium mt-1">En todos los frameworks</p>
+                <p className="text-sm text-slate-500 font-medium mt-1">En todos los playbooks</p>
             </div>
             <div className="p-3 bg-amber-50 text-amber-600 rounded-lg">
                 <Clock className="w-5 h-5" />
@@ -81,13 +82,13 @@ export const FrameworksReport: React.FC = () => {
       {/* Main Table */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center">
-            <h3 className="font-bold text-slate-800">Efectividad por Estrategia</h3>
+            <h3 className="font-bold text-slate-800">Efectividad por Playbook</h3>
         </div>
         
         <table className="w-full text-sm text-left">
             <thead className="bg-slate-50 text-slate-500 font-bold text-xs uppercase tracking-wider border-b border-slate-200">
                 <tr>
-                    <th className="px-6 py-4">Framework</th>
+                    <th className="px-6 py-4">Playbook</th>
                     <th className="px-6 py-4">Compromisos Resueltos</th>
                     <th className="px-6 py-4">Días Promedio</th>
                     <th className="px-6 py-4 w-1/3">Distribución de Resultados</th>

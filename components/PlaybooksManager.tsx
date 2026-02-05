@@ -80,7 +80,7 @@ export const PlaybooksManager: React.FC = () => {
   };
 
   const handleDelete = (id: string) => {
-      if(confirm("¿Eliminar playbook?")) {
+      if(confirm("¿Eliminar estrategia?")) {
           setPlaybooks(prev => prev.filter(p => p.id !== id));
       }
   };
@@ -142,17 +142,17 @@ export const PlaybooksManager: React.FC = () => {
             <div>
                 <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
                     <BookOpen className="w-6 h-6 text-indigo-600" />
-                    Gestión de Playbooks
+                    Gestión de Estrategias
                 </h1>
                 <p className="text-slate-500 text-sm mt-1 max-w-2xl">
-                    Orquestación estratégica de frameworks a lo largo del ciclo de vida del cliente.
+                    Orquestación de Playbooks a lo largo del ciclo de vida del cliente.
                 </p>
             </div>
             <button 
                 onClick={handleCreate}
                 className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-sm transition-all"
             >
-                <Plus className="w-4 h-4" /> Nuevo Playbook
+                <Plus className="w-4 h-4" /> Nueva Estrategia
             </button>
         </div>
       </header>
@@ -163,7 +163,7 @@ export const PlaybooksManager: React.FC = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
                 type="text" 
-                placeholder="Buscar playbook..." 
+                placeholder="Buscar estrategia..." 
                 className="pl-9 pr-4 py-1.5 text-sm bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-indigo-100 outline-none w-64"
             />
         </div>
@@ -181,9 +181,9 @@ export const PlaybooksManager: React.FC = () => {
         <table className="w-full text-left border-collapse">
             <thead className="bg-white sticky top-0 z-10 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">
                 <tr>
-                    <th className="px-8 py-4 w-1/3">PLAYBOOK</th>
+                    <th className="px-8 py-4 w-1/3">ESTRATEGIA</th>
                     <th className="px-6 py-4">ESTADO</th>
-                    <th className="px-6 py-4">FRAMEWORKS</th>
+                    <th className="px-6 py-4">PLAYBOOKS</th>
                     <th className="px-6 py-4">COBERTURA</th>
                     <th className="px-6 py-4">CAMPAÑAS</th>
                     <th className="px-6 py-4">RIESGO</th>
@@ -290,7 +290,7 @@ const PlaybookEditor: React.FC<{
                     </button>
                     <div>
                         <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                            {initialData?.id ? 'Editar Playbook' : 'Crear Playbook'}
+                            {initialData?.id ? 'Editar Estrategia' : 'Crear Estrategia'}
                         </h2>
                         <div className="flex items-center gap-2 text-xs text-slate-500">
                             <span>v{formData.version || '1.0'}</span>
@@ -407,7 +407,7 @@ const StrategyTab: React.FC<{
                             value={data.name}
                             onChange={e => onChange({ ...data, name: e.target.value })}
                             className="w-full text-xl font-bold text-slate-900 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-indigo-500 outline-none transition-colors placeholder:text-slate-300"
-                            placeholder="Nombre del Playbook"
+                            placeholder="Nombre de la Estrategia"
                         />
                     </div>
                     <div className="space-y-1">
@@ -497,7 +497,7 @@ const StrategyTab: React.FC<{
                                                     <button 
                                                         onClick={() => setEditingFrameworkId(fw.id)}
                                                         className="p-1 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded"
-                                                        title="Editar Framework"
+                                                        title="Editar Playbook"
                                                     >
                                                         <Edit className="w-3 h-3" />
                                                     </button>
@@ -528,7 +528,7 @@ const StrategyTab: React.FC<{
                                         onClick={() => setIsAddingToStage(stage.id)}
                                         className="w-full py-3 border-2 border-dashed border-slate-200 rounded-lg text-slate-400 hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50 transition-all flex items-center justify-center gap-2 text-sm font-bold"
                                     >
-                                        <Plus className="w-4 h-4" /> Añadir Framework
+                                        <Plus className="w-4 h-4" /> Añadir Playbook
                                     </button>
 
                                     {/* SELECTOR POPUP */}
@@ -551,7 +551,7 @@ const StrategyTab: React.FC<{
                                                         className="w-full text-left p-3 rounded-md bg-indigo-50 border border-indigo-100 text-indigo-700 hover:bg-indigo-100 transition-colors flex items-center gap-2"
                                                     >
                                                         <Plus className="w-3.5 h-3.5" />
-                                                        <span className="text-xs font-bold">Crear Nuevo Framework</span>
+                                                        <span className="text-xs font-bold">Crear Nuevo Playbook</span>
                                                     </button>
                                                     
                                                     <div className="h-px bg-slate-100 my-1"></div>
@@ -579,7 +579,7 @@ const StrategyTab: React.FC<{
                                                     
                                                     {availableFrameworks.filter(f => f.lane === stage.id).length === 0 && (
                                                         <div className="text-center py-4 text-xs text-slate-400">
-                                                            No hay más frameworks disponibles.
+                                                            No hay más playbooks disponibles.
                                                         </div>
                                                     )}
                                                 </div>
@@ -607,6 +607,8 @@ const StrategyTab: React.FC<{
         </div>
     );
 };
+
+// ... (Preview tab logic follows similarly)
 
 const PreviewTab: React.FC<{ data: Partial<Playbook>; availableFrameworks: Framework[] }> = ({ data, availableFrameworks }) => {
     // Flatten all frameworks in order of stage
@@ -678,7 +680,7 @@ const PreviewTab: React.FC<{ data: Partial<Playbook>; availableFrameworks: Frame
                          
                          {sequence.length === 0 && (
                              <div className="text-center py-12 text-slate-400 italic">
-                                 No hay frameworks configurados en la estrategia aún.
+                                 No hay playbooks configurados en la estrategia aún.
                              </div>
                          )}
                     </div>

@@ -65,7 +65,7 @@ export const ReportsHub: React.FC<Props> = ({ chatHistory = [], onOpenChat }) =>
                     onClick={() => setActiveTab('campaigns')} 
                 />
                 <TabButton 
-                    label="Efectividad Frameworks" 
+                    label="Efectividad Playbooks" 
                     isActive={activeTab === 'frameworks'} 
                     onClick={() => setActiveTab('frameworks')} 
                 />

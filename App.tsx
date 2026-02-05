@@ -149,8 +149,8 @@ const App: React.FC = () => {
   const getPageTitle = () => {
       switch(currentView) {
           case 'reports': return 'Reportes';
-          case 'frameworks': return 'Frameworks (Táctico)';
-          case 'playbooks': return 'Playbooks (Estratégico)';
+          case 'frameworks': return 'Playbooks (Táctico)';
+          case 'playbooks': return 'Estrategias (Estratégico)';
           case 'upload': return 'Importar Datos';
           case 'billing': return 'Plan y Costos';
           default: return 'Mapa de Compromisos';
@@ -162,7 +162,7 @@ const App: React.FC = () => {
       {
           targetId: 'sidebar-nav',
           title: 'Navegación Principal',
-          description: 'Accede a tus reportes, configura frameworks de comunicación y gestiona tus estrategias (Playbooks) desde aquí.',
+          description: 'Accede a tus reportes, configura tus Playbooks de comunicación y gestiona tus Estrategias desde aquí.',
           position: 'right'
       },
       {
@@ -213,8 +213,8 @@ const App: React.FC = () => {
                 <SidebarIcon icon={<UploadCloud className="w-5 h-5" />} label="Importar" active={currentView === 'upload'} onClick={() => { setCurrentView('upload'); setSelectedCustomer(null); }} />
             </div>
             <div className="h-px w-8 bg-slate-200"></div>
-            <SidebarIcon icon={<Workflow className="w-5 h-5" />} label="Frameworks" active={currentView === 'frameworks'} onClick={() => { setCurrentView('frameworks'); setSelectedCustomer(null); }} />
-            <SidebarIcon icon={<BookOpen className="w-5 h-5" />} label="Playbooks" active={currentView === 'playbooks'} onClick={() => { setCurrentView('playbooks'); setSelectedCustomer(null); }} />
+            <SidebarIcon icon={<Workflow className="w-5 h-5" />} label="Playbooks" active={currentView === 'frameworks'} onClick={() => { setCurrentView('frameworks'); setSelectedCustomer(null); }} />
+            <SidebarIcon icon={<BookOpen className="w-5 h-5" />} label="Estrategias" active={currentView === 'playbooks'} onClick={() => { setCurrentView('playbooks'); setSelectedCustomer(null); }} />
             <div className="h-px w-8 bg-slate-200"></div>
             <SidebarIcon icon={<BarChart2 className="w-5 h-5" />} label="Reportes" active={currentView === 'reports'} onClick={() => { setCurrentView('reports'); setSelectedCustomer(null); }} />
              <SidebarIcon icon={<CreditCard className="w-5 h-5" />} label="Plan y Costos" active={currentView === 'billing'} onClick={() => { setCurrentView('billing'); setSelectedCustomer(null); }} />

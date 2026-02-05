@@ -110,7 +110,7 @@ export const FrameworksManager: React.FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm('¿Estás seguro de eliminar este framework?')) {
+    if (confirm('¿Estás seguro de eliminar este playbook?')) {
         setFrameworks(prev => prev.filter(f => f.id !== id));
     }
     setActiveMenuId(null);
@@ -150,17 +150,17 @@ export const FrameworksManager: React.FC = () => {
             <div>
                 <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
                     <Workflow className="w-6 h-6 text-indigo-600" />
-                    Gestión de Frameworks
+                    Gestión de Playbooks
                 </h1>
                 <p className="text-slate-500 text-sm mt-1 max-w-2xl">
-                    Los Frameworks definen cómo se ejecutan las acciones y dónde se enrutan los compromisos durante el ciclo de vida del pago.
+                    Los Playbooks definen cómo se ejecutan las acciones y dónde se enrutan los compromisos durante el ciclo de vida del pago.
                 </p>
             </div>
             <button 
                 onClick={handleCreateNew}
                 className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-sm transition-all"
             >
-                <Plus className="w-4 h-4" /> Crear Framework
+                <Plus className="w-4 h-4" /> Crear Playbook
             </button>
         </div>
       </header>
@@ -171,7 +171,7 @@ export const FrameworksManager: React.FC = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
                 type="text" 
-                placeholder="Buscar framework..." 
+                placeholder="Buscar playbook..." 
                 className="pl-9 pr-4 py-1.5 text-sm bg-white border border-slate-200 rounded-md focus:ring-2 focus:ring-indigo-100 outline-none w-64"
             />
         </div>
@@ -189,11 +189,11 @@ export const FrameworksManager: React.FC = () => {
         <table className="w-full text-left border-collapse">
             <thead className="bg-white sticky top-0 z-10 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 shadow-sm">
                 <tr>
-                    <th className="px-8 py-4 w-1/4">NOMBRE DEL FRAMEWORK</th>
+                    <th className="px-8 py-4 w-1/4">NOMBRE DEL PLAYBOOK</th>
                     <th className="px-6 py-4 w-40">🏷️ BANDEJA</th>
                     <th className="px-6 py-4 w-32">ACCIONES</th>
                     <th className="px-6 py-4 w-32">INVERSIÓN</th>
-                    <th className="px-6 py-4 w-32">PLAYBOOKS</th>
+                    <th className="px-6 py-4 w-32">ESTRATEGIAS</th>
                     <th className="px-6 py-4 w-32">CAMPAÑAS</th>
                     <th className="px-6 py-4">ESTADO</th>
                     <th className="px-6 py-4 w-10"></th>
@@ -284,10 +284,7 @@ export const FrameworksManager: React.FC = () => {
   );
 };
 
-// ... (Rest of the file remains same, ensuring readOnly logic is removed from Modal if passed or handled by removing usage)
-// I will rewrite the rest of the component to ensure clean removal of the logic
-
-// --- SUBCOMPONENTS ---
+// ... (Rest of the file remains mostly the same logic, simplified for XML length but key changes are above)
 
 const LaneBadge: React.FC<{ laneId: StageId }> = ({ laneId }) => {
     const stage = STAGES.find(s => s.id === laneId);
@@ -376,7 +373,7 @@ export const CreateFrameworkModal: React.FC<CreateModalProps> = ({ initialData, 
                 <div className="px-8 py-4 border-b border-slate-100 flex justify-between items-center bg-white">
                     <div>
                         <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                            {isEditMode ? 'Editar Framework' : 'Crear Nuevo Framework'}
+                            {isEditMode ? 'Editar Playbook' : 'Crear Nuevo Playbook'}
                         </h2>
                         <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
                             <span>Paso {step} de 4</span>
@@ -442,7 +439,7 @@ export const CreateFrameworkModal: React.FC<CreateModalProps> = ({ initialData, 
                                     : 'bg-slate-900 hover:bg-slate-800 text-white'}
                             `}
                         >
-                            {step === 4 ? (isEditMode ? 'Guardar Cambios' : 'Publicar Framework') : 'Siguiente'}
+                            {step === 4 ? (isEditMode ? 'Guardar Cambios' : 'Publicar Playbook') : 'Siguiente'}
                             {step !== 4 && <ArrowRight className="w-4 h-4" />}
                         </button>
                     </div>
@@ -734,7 +731,6 @@ const FlowBuilder: React.FC<{ data: Partial<Framework>, onChange: (d: Partial<Fr
 };
 
 // ... (Rest of file including Config Forms and Steps logic kept intact, just ensuring readOnly logic is removed from FlowBuilder calls above)
-// I already removed `readOnly` passed prop usage in FlowBuilder and CreateFrameworkModal above.
 
 // --- CONFIG FORMS ---
 
@@ -994,7 +990,7 @@ const StepBasicInfo: React.FC<{ data: Partial<Framework>, onChange: (d: Partial<
     return (
         <div className="max-w-xl mx-auto space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
             <div className="space-y-4">
-                <label className="block text-sm font-bold text-slate-800">Nombre del Framework</label>
+                <label className="block text-sm font-bold text-slate-800">Nombre del Playbook</label>
                 <input 
                     type="text" 
                     value={data.name}
@@ -1054,7 +1050,7 @@ const StepRules: React.FC = () => {
                  </div>
                  <h3 className="text-lg font-bold text-slate-900">Reglas de Asignación (Segmentación)</h3>
                  <p className="text-sm text-slate-500 max-w-lg mx-auto">
-                    Define qué criterios deben cumplir los clientes para entrar automáticamente en este framework.
+                    Define qué criterios deben cumplir los clientes para entrar automáticamente en este playbook.
                  </p>
             </div>
 
@@ -1095,7 +1091,7 @@ const StepRules: React.FC = () => {
             <div className="mt-6 p-4 bg-amber-50 text-amber-800 text-xs rounded-lg border border-amber-100 flex items-start gap-2">
                 <AlertCircle className="w-4 h-4 mt-0.5 flex-none" />
                 <p>
-                    Nota: En esta demo, las reglas son solo visuales. El framework se creará pero la asignación automática requiere integración con el motor de reglas.
+                    Nota: En esta demo, las reglas son solo visuales. El playbook se creará pero la asignación automática requiere integración con el motor de reglas.
                 </p>
             </div>
         </div>
@@ -1163,7 +1159,7 @@ const StepPreview: React.FC<{ data: Partial<Framework> }> = ({ data }) => {
 
                 <div className="mt-8 pt-6 border-t border-slate-100 text-center">
                     <p className="text-sm text-slate-500 italic">
-                        "Los compromisos que utilicen este framework aparecerán en la bandeja <strong>{laneInfo?.label}</strong> del Mapa de Compromisos."
+                        "Los compromisos que utilicen este playbook aparecerán en la bandeja <strong>{laneInfo?.label}</strong> del Mapa de Compromisos."
                     </p>
                 </div>
 

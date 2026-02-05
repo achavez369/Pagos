@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Customer, Ticket, StageId, TicketActivity } from '../types';
@@ -213,7 +214,7 @@ export const CustomerDetailModal: React.FC<Props> = ({ customer, onClose, breadc
                                     <th className="px-6 py-3">Vencimiento</th>
                                     <th className="px-6 py-3">Pagado El</th>
                                     <th className="px-6 py-3">Resultado</th>
-                                    <th className="px-6 py-3">Framework</th>
+                                    <th className="px-6 py-3">Playbook</th>
                                     <th className="px-6 py-3 text-right">Días</th>
                                     <th className="px-6 py-3 w-10"></th>
                                 </tr>
