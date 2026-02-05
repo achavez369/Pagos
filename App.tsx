@@ -7,7 +7,7 @@ import { Customer, StageId, PaymentRecord, FilterState } from './types';
 import { 
   Play, Pause, RefreshCw, Search, LayoutDashboard, Settings, 
   BarChart2, Inbox, Bell, HelpCircle, Command, Workflow,
-  BookOpen, UploadCloud, CreditCard
+  BookOpen, UploadCloud, CreditCard, Megaphone
 } from 'lucide-react';
 import { CustomerDetailModal } from './components/CustomerDetailModal';
 import { PaymentHistoryModal } from './components/PaymentHistoryModal';
@@ -15,6 +15,7 @@ import { FilterBar } from './components/FilterBar';
 import { ReportsHub } from './components/ReportsHub';
 import { FrameworksManager } from './components/FrameworksManager';
 import { PlaybooksManager } from './components/PlaybooksManager';
+import { CampaignsReport } from './components/CampaignsReport';
 import { DataUploadView } from './components/DataUploadView';
 import { PlanAndBilling } from './components/PlanAndBilling';
 import { LoginView } from './components/LoginView';
@@ -31,7 +32,7 @@ const App: React.FC = () => {
   const [isSimulating, setIsSimulating] = useState(false);
   
   // Navigation State
-  const [currentView, setCurrentView] = useState<'dashboard' | 'reports' | 'frameworks' | 'playbooks' | 'upload' | 'billing'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'reports' | 'frameworks' | 'playbooks' | 'campaigns' | 'upload' | 'billing'>('dashboard');
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   
   // Chat & Token State (Hoisted)
@@ -151,6 +152,7 @@ const App: React.FC = () => {
           case 'reports': return 'Reportes';
           case 'frameworks': return 'Playbooks (Táctico)';
           case 'playbooks': return 'Estrategias (Estratégico)';
+          case 'campaigns': return 'Campañas Operativas';
           case 'upload': return 'Importar Datos';
           case 'billing': return 'Plan y Costos';
           default: return 'Mapa de Compromisos';
@@ -209,6 +211,7 @@ const App: React.FC = () => {
         
         <nav className="flex flex-col gap-6 w-full items-center">
             <SidebarIcon icon={<Inbox className="w-5 h-5" />} label="Inbox" active={currentView === 'dashboard'} onClick={() => { setCurrentView('dashboard'); setSelectedCustomer(null); }} />
+            <SidebarIcon icon={<Megaphone className="w-5 h-5" />} label="Campañas" active={currentView === 'campaigns'} onClick={() => { setCurrentView('campaigns'); setSelectedCustomer(null); }} />
             <div id="upload-btn">
                 <SidebarIcon icon={<UploadCloud className="w-5 h-5" />} label="Importar" active={currentView === 'upload'} onClick={() => { setCurrentView('upload'); setSelectedCustomer(null); }} />
             </div>
@@ -306,6 +309,16 @@ const App: React.FC = () => {
                 <FrameworksManager />
             ) : currentView === 'playbooks' ? (
                 <PlaybooksManager />
+            ) : currentView === 'campaigns' ? (
+                <div className="flex-1 overflow-y-auto p-8 bg-slate-50">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="mb-6">
+                            <h2 className="text-2xl font-bold text-slate-900">Control de Campañas</h2>
+                            <p className="text-slate-500 text-sm">Monitoreo operativo y salud de cartera por ingesta.</p>
+                        </div>
+                        <CampaignsReport />
+                    </div>
+                </div>
             ) : currentView === 'billing' ? (
                 <PlanAndBilling />
             ) : (
